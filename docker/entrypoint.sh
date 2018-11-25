@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 
-if [ ! -f "composer.json" ]; then
-  symfony new app 3.4
+if [ ! -d "vendor" ]; then
+  composer install
 fi
 
 exec "$@"
