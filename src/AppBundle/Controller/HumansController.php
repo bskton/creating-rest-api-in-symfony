@@ -2,13 +2,14 @@
 /**
  * Created by PhpStorm.
  * User: ilya
- * Date: 03.12.18
- * Time: 22:06
+ * Date: 12.12.18
+ * Time: 22:22
  */
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Movie;
+
+use AppBundle\Entity\Person;
 use AppBundle\Exception\ValidationException;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\ControllerTrait;
@@ -16,68 +17,70 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class MoviesController extends AbstractController
+class HumansController extends AbstractController
 {
     use ControllerTrait;
 
     /**
      * @Rest\View()
-     * @return Movie[]
+     * @return Person[]
      */
-    public function getMoviesAction()
+    public function getHumansAction()
     {
-        $movies = $this->getDoctrine()->getRepository('AppBundle:Movie')->findAll();
+        $people = $this->getDoctrine()->getRepository('AppBundle:Person')->findAll();
 
-        return $movies;
+        return $people;
     }
 
     /**
      * @Rest\View(statusCode=201)
-     * @ParamConverter("movie", converter="fos_rest.request_body")
+     * @ParamConverter("person", converter="fos_rest.request_body")
      * @Rest\NoRoute()
      *
-     * @param Movie $movie
+     * @param Person $person
      * @param ConstraintViolationListInterface $validationErrors
-     * @return Movie
+     * @return Person
      */
-    public function postMovieAction(Movie $movie, ConstraintViolationListInterface $validationErrors)
+    public function postHumanAction(Person $person, ConstraintViolationListInterface $validationErrors)
     {
         if (count($validationErrors) > 0) {
             throw new ValidationException($validationErrors);
         }
 
         $em = $this->getDoctrine()->getManager();
-        $em->persist($movie);
+        $em->persist($person);
         $em->flush();
 
-        return $movie;
+        return $person;
     }
 
     /**
      * @Rest\View()
-     * @param Movie $movie
+     * @param Person $person
      * @return \FOS\RestBundle\View\View
      */
-    public function deleteMovieAction(?Movie $movie)
+    public function deleteHumanAction(?Person $person)
     {
-        if (null === $movie) {
+        if (null === $person) {
             return $this->view(null, 404);
         }
 
         $em = $this->getDoctrine()->getManager();
-        $em->remove($movie);
+        $em->remove($person);
         $em->flush();
     }
 
     /**
      * @Rest\View()
+     * @param Person|null $person
+     * @return Person|\FOS\RestBundle\View\View|null
      */
-    public function getMovieAction(?Movie $movie)
+    public function getHumanAction(?Person $person)
     {
-        if (null === $movie) {
+        if (null === $person) {
             return $this->view(null, 404);
         }
 
-        return $movie;
+        return $person;
     }
 }

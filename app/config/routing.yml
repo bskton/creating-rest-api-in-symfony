@@ -12,3 +12,14 @@ movie_post:
     defaults:
         _controller: AppBundle\Controller\MoviesController:postMovieAction
         _format: json
+
+humans:
+    type: rest
+    resource: AppBundle\Controller\HumansController
+
+human_post:
+    path: /humans
+    methods: [POST]
+    defaults:
+        _controller: AppBundle\Controller\HumansController:postHumanAction
+        _format: json
