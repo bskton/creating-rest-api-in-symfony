@@ -17,9 +17,9 @@ services:
     # volumes:
     #   - db:/var/lib/postgresql/data:rw
   pgadmin:
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:3.6
     ports:
-      - 80:80
+      - 8080:80
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@local
       PGADMIN_DEFAULT_PASSWORD: secret
