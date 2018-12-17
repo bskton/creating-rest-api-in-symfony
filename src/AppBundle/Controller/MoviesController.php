@@ -91,7 +91,7 @@ class MoviesController extends AbstractController
      * @Rest\View()
      * @return Collection
      */
-    public function getMovieRoles(Movie $movie)
+    public function getMovieRolesAction(Movie $movie)
     {
         return $movie->getRoles();
     }
@@ -99,10 +99,10 @@ class MoviesController extends AbstractController
     /**
      * @param Movie $movie
      * @param Role $role
-     *
-     * @Rest\View(statusCode=201)
-     * @ParamConverter("role", converter="fos_rest.request_body")
+     * @param ConstraintViolationListInterface $validationErrors
      * @return Role
+     * @Rest\View(statusCode=201)
+     * @ParamConverter("role", converter="fos_rest.request_body", options={"deserializationContext"={"groups"={"Deserialize"}}})
      */
     public function postMovieRolesAction(Movie $movie, Role $role, ConstraintViolationListInterface $validationErrors)
     {

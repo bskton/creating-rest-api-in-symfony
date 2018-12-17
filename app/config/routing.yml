@@ -24,7 +24,7 @@ human_post:
         _controller: AppBundle\Controller\HumansController:postHumanAction
         _format: json
 
-moveis_roles_post:
+movies_roles_post:
     path: /movies/{movie}/roles
     methods: [POST]
     defaults:
