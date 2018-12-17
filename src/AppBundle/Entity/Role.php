@@ -32,6 +32,7 @@ class Role
      *
      * @ORM\ManyToOne(targetEntity="Person")
      * @App\DeserializeEntity(type="AppBundle\Entity\Person", idField="id", idGetter="getId", setter="setPerson")
+     * @Assert\NotBlank()
      */
     private $person;
 
@@ -40,6 +41,7 @@ class Role
      *
      * @ORM\Column(name="played_name", type="string", length=100)
      * @Assert\NotBlank()
+     * @Assert\Length(min=1, max=100)
      */
     private $playedName;
 

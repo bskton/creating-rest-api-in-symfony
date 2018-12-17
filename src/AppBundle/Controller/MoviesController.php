@@ -104,8 +104,12 @@ class MoviesController extends AbstractController
      * @ParamConverter("role", converter="fos_rest.request_body")
      * @return Role
      */
-    public function postMovieRolesAction(Movie $movie, Role $role)
+    public function postMovieRolesAction(Movie $movie, Role $role, ConstraintViolationListInterface $validationErrors)
     {
+        if (count($validationErrors) > 0) {
+            throw new ValidationException($validationErrors);
+        }
+
         $role->setMovie($movie);
         $em = $this->getDoctrine()->getManager();
         $em->persist($role);
