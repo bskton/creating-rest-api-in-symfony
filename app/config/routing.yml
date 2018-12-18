@@ -13,6 +13,14 @@ movie_post:
         _controller: AppBundle\Controller\MoviesController:postMovieAction
         _format: json
 
+
+movie_patch:
+    path: /movies/{movie}
+    methods: [PATCH]
+    defaults:
+        _controller: AppBundle\Controller\MoviesController:patchMovieAction
+        _format: json
+
 humans:
     type: rest
     resource: AppBundle\Controller\HumansController

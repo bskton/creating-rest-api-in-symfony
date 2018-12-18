@@ -8,6 +8,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\EntityMerger;
 use AppBundle\Entity\Movie;
 use AppBundle\Entity\Role;
 use AppBundle\Exception\ValidationException;
@@ -22,6 +23,20 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 class MoviesController extends AbstractController
 {
     use ControllerTrait;
+
+    /**
+     * @var EntityMerger
+     */
+    private $entityMerger;
+
+    /**
+     * MoviesController constructor.
+     * @param EntityMerger $entityMerger
+     */
+    public function __construct(EntityMerger $entityMerger)
+    {
+        $this->entityMerger = $entityMerger;
+    }
 
     /**
      * @Rest\View()
@@ -118,5 +133,34 @@ class MoviesController extends AbstractController
         $em->flush();
 
         return $role;
+    }
+
+    /**
+     * @Rest\NoRoute()
+     * @ParamConverter("modifiedMovie", converter="fos_rest.request_body",
+     *     options={"validator"={"groups"={"Patch"}}}
+     * )
+     */
+    public function patchMovieAction(
+        ?Movie $movie,
+        Movie $modifiedMovie,
+        ConstraintViolationListInterface $validationErrors
+    )
+    {
+        if (null === $movie) {
+            return $this->view(null, 404);
+        }
+
+        if (count($validationErrors) > 0) {
+            throw new ValidationException($validationErrors);
+        }
+
+        $this->entityMerger->merge($movie, $modifiedMovie);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($movie);
+        $em->flush();
+
+        return $movie;
     }
 }
