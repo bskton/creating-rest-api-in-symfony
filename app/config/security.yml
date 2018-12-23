@@ -13,8 +13,12 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        main:
-            anonymous: ~
+        secured_api:
+            anonymous: true
+            stateless: true
+            guard:
+                authenticators:
+                    - AppBundle\Security\TokenAuthenticator
             # activate different ways to authenticate
 
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate

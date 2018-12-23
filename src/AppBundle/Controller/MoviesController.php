@@ -17,9 +17,13 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\ControllerTrait;
 use FOS\RestBundle\View\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
+/**
+ * @Security("is_anonymous() or is_authenticated()")
+ */
 class MoviesController extends AbstractController
 {
     use ControllerTrait;
@@ -140,6 +144,7 @@ class MoviesController extends AbstractController
      * @ParamConverter("modifiedMovie", converter="fos_rest.request_body",
      *     options={"validator"={"groups"={"Patch"}}}
      * )
+     * @Security("is_authenticated()")
      */
     public function patchMovieAction(
         ?Movie $movie,
