@@ -96,7 +96,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        return new User('username', 'password');
+        return $userProvider->loadUserByUsername($credentials);
     }
 
     /**
@@ -117,7 +117,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return 'abcde' === $credentials;
+        return true;
     }
 
     /**
